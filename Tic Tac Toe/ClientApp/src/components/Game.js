@@ -31,9 +31,9 @@ const Game = () => {
     }
 
     const resetGame = () => {
-        // tell board to clear everything et al.
         disableSwitch(false)
         checkSwitch(false)
+        // tell board to clear everything et al.
     }
 
     return (<>
