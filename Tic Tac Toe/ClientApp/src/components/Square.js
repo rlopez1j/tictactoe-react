@@ -9,10 +9,16 @@ const useStyles = makeStyles({
     }
 })
 
-const Square = ({ }) => {
+
+const Square = ({ id }) => {
     const classes = useStyles()
+
+    const handleClick = () => {
+        console.log('click from ', id)
+    }
+
     return (<>
-        <div className={classes.square}>
+        <div className={classes.square} onClick={handleClick}>
         </div>
     </>)
 }

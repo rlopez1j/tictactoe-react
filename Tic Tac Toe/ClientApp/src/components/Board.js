@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Square from './Square';
-import { height } from '@material-ui/system';
 
 const useStyles = makeStyles({
     turnDisplay: {
@@ -34,7 +33,7 @@ const Board = ({ turnGiven }) => {
     const createBoard = () => {
         let html = []
         for (let i = 0; i < 9; i++)
-            html.push(<div className={classes.child} key={i}><Square /></div>)
+            html.push(<div className={classes.child} key={i}><Square id={i} /></div>)
         return html
     }
 
