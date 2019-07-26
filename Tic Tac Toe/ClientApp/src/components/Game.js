@@ -1,35 +1,39 @@
 import React, { useState } from 'react'
 import { Button, Switch, Box, Container, makeStyles } from '@material-ui/core';
 import 'typeface-roboto';
+import Board from './Board';
 
 const useStyles = makeStyles({
     buttons: {
         display: 'flex',
-        justifyContent: 'space-around'
+        justifyContent: 'space-between'
     },
     board: {
         display: 'flex',
         justifyContent: 'center'
     },
     xoFont: {
+        display: 'flex',
         fontWeight: 'bold',
         fontSize: 'xx-large'
-    }
+    },
 })
 
 
 const Game = () => {
     const classes = useStyles()
     const [switchDisabled, disableSwitch] = useState(false)
+    const [switchChecked, checkSwitch] = useState(false)
 
     const onSwitch = () => {
         disableSwitch(true)
-        // change turn state
+        checkSwitch(!switchChecked)
     }
 
     const resetGame = () => {
         // tell board to clear everything et al.
         disableSwitch(false)
+        checkSwitch(false)
     }
 
     return (<>
@@ -39,20 +43,25 @@ const Game = () => {
                     <div className={classes.xoFont}>
                         <div>X</div>
                         <div>
-                            <Switch
+                            <Switch color="secondary"
+                                className={classes.switch}
+                                checked={switchChecked}
                                 disabled={switchDisabled}
                                 onChange={onSwitch}
                             />
                         </div>
                         <div>O</div>
                     </div>
-                    <Button color="secondary" variant="contained"
-                        onClick={resetGame}>
-                        Reset
-                </Button>
+                    <div>
+                        <Button color="secondary" variant="contained"
+                            onClick={resetGame}>
+                            Reset
+                        </Button>
+                    </div>
                 </div>
             </Box>
         </Container>
+        <Board turnGiven={switchChecked} />
     </>)
 }
 
