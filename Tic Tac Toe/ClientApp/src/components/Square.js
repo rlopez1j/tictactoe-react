@@ -10,15 +10,24 @@ const useStyles = makeStyles({
 })
 
 
-const Square = ({ id }) => {
+const Square = ({ turn, alternateTurn }) => {
+    const [letter, setLetter] = useState()
+    const [clicked, setClicked] = useState(false)
     const classes = useStyles()
 
+
     const handleClick = () => {
-        console.log('click from ', id)
+        if (!clicked) {
+            console.log('click from ', !turn ? 'X' : 'O')
+            setClicked(true)
+            alternateTurn()
+            !turn ? setLetter('X') : setLetter('O')
+        }
     }
 
     return (<>
         <div className={classes.square} onClick={handleClick}>
+            {clicked ? letter : ''}
         </div>
     </>)
 }
