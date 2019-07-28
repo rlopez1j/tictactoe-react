@@ -61,7 +61,7 @@ const Game = () => {
                 </div>
             </Box>
         </Container>
-        <Board turnGiven={switchChecked} />
+        <Board turnGiven={switchChecked} switchDisabled={switchDisabled}/>
     </>)
 }
 
