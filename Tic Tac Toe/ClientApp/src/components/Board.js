@@ -26,26 +26,31 @@ const useStyles = makeStyles({
     }
 })
 
-const Board = ({ turnGiven }) => {
+const Board = ({ turnGiven, disableFromChild }) => {
     const classes = useStyles()
     const [turn, changeTurn] = useState(turnGiven)
     const [parentSwitchedChanged, setParentSwitchChanged] = useState(false)
+
     if (turnGiven != turn && !parentSwitchedChanged) {
         changeTurn(turnGiven)
         setParentSwitchChanged(true)
     }
-    console.log('given: ', turnGiven, ' actual: ', turn)
 
     const createBoard = () => {
         let html = []
         for (let i = 0; i < 9; i++)
-            html.push(<div className={classes.child} key={i}><Square turn={turn} alternateTurn={() => alternateTurn()} /></div>)
+            html.push(<div className={classes.child} key={i}>
+                <Square
+                    turn={turn}
+                    alternateTurn={() => alternateTurn()}
+                /></div>)
         return html
     }
 
     const alternateTurn = () => {
         changeTurn(!turn)
-        console.log('new turn ', turn)
+        disableFromChild(true)
+        setParentSwitchChanged(true)
     }
 
     return (<>

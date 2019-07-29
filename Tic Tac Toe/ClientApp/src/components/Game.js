@@ -36,6 +36,11 @@ const Game = () => {
         // tell board to clear everything et al.
     }
 
+    // used as a callback function for child
+    const disableFromChild = () => {
+        disableSwitch(true)
+    }
+
     return (<>
         <Container fixed>
             <Box m={1}>
@@ -61,7 +66,10 @@ const Game = () => {
                 </div>
             </Box>
         </Container>
-        <Board turnGiven={switchChecked} switchDisabled={switchDisabled}/>
+        <Board
+            turnGiven={switchChecked}
+            disableFromChild={() => disableFromChild()}
+        />
     </>)
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
+
 
 const useStyles = makeStyles({
     square: {
@@ -11,23 +12,23 @@ const useStyles = makeStyles({
 
 
 const Square = ({ turn, alternateTurn }) => {
-    const [letter, setLetter] = useState()
+    const [letter, setLetter] = useState('')
     const [clicked, setClicked] = useState(false)
     const classes = useStyles()
 
-
     const handleClick = () => {
         if (!clicked) {
-            console.log('click from ', !turn ? 'X' : 'O')
             setClicked(true)
-            alternateTurn()
             !turn ? setLetter('X') : setLetter('O')
+            alternateTurn()
         }
     }
 
     return (<>
         <div className={classes.square} onClick={handleClick}>
-            {clicked ? letter : ''}
+            <Typography>
+                {letter}
+            </Typography>
         </div>
     </>)
 }
