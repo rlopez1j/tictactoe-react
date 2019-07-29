@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import { Typography, makeStyles } from '@material-ui/core';
+import React from 'react'
+import { makeStyles } from '@material-ui/core';
 import Square from './Square';
 
 const useStyles = makeStyles({
-    turnDisplay: {
-        display: 'flex',
-        justifyContent: 'center',
-        fontWeight: 'bold'
-    },
     board: {
         display: 'flex',
         justifyContent: 'center'
@@ -26,43 +21,25 @@ const useStyles = makeStyles({
     }
 })
 
-const Board = ({ turnGiven, disableFromChild }) => {
+/**
+ * Component to display a 3x3 tic tac toe board.
+ * @param {boardState} boardState - 1x9 array representing a tic tac toe board with X and O letters
+ * @param {onSquareClicked} onSquareClicked - Function that is called when a game square is clicked.
+ */
+export default function Board({ boardState, onSquareClicked }) {
     const classes = useStyles()
-    const [turn, changeTurn] = useState(turnGiven)
-    const [parentSwitchedChanged, setParentSwitchChanged] = useState(false)
-
-    if (turnGiven != turn && !parentSwitchedChanged) {
-        changeTurn(turnGiven)
-        setParentSwitchChanged(true)
-    }
-
-    const createBoard = () => {
-        let html = []
-        for (let i = 0; i < 9; i++)
-            html.push(<div className={classes.child} key={i}>
-                <Square
-                    turn={turn}
-                    alternateTurn={() => alternateTurn()}
-                /></div>)
-        return html
-    }
-
-    const alternateTurn = () => {
-        changeTurn(!turn)
-        disableFromChild(true)
-        setParentSwitchChanged(true)
-    }
-
-    return (<>
-        <Typography variant="h1" className={classes.turnDisplay}>
-            {!turn ? 'X' : 'O'}
-        </Typography>
+    return (
         <div className={classes.board}>
             <div className={classes.parent}>
-                {createBoard()}
+                {boardState.map((move, i) => (
+                    <div className={classes.child} key={i} >
+                        <Square
+                            onClick={() => onSquareClicked(i)}>
+                            {move}
+                        </Square>
+                    </div>
+                ))}
             </div>
         </div>
-    </>)
+    )
 }
-
-export default Board;

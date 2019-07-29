@@ -1,7 +1,7 @@
 import React from 'react';
-import Game from './Game'
 import { AppBar, Toolbar, Typography, CssBaseline, makeStyles } from '@material-ui/core';
 import 'typeface-roboto';
+import Board from './BoardContainer';
 
 const useStyles = makeStyles({
   toolBarFlex: {
@@ -23,7 +23,7 @@ function App() {
         </Typography>
       </Toolbar>
     </AppBar>
-    <Game />
+    <Board />
   </>);
 }
 
