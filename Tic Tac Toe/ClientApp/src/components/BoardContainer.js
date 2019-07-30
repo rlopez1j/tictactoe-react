@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Board from './Board';
 import BoardControls from './BoardControls'
+import { identifier } from '@babel/types';
 
 
 const useStyles = makeStyles({
@@ -32,11 +33,24 @@ const BoardContainer = () => {
     const [winningLetter, setWinningLetter] = useState(null)
 
     /**
-     * Derived states which are created by 
-     * making an evaluation or operation on a state
+     * Derived states which are created by making an evaluation or operation on a state
      */
     const currentLetter = !currentTurn ? 'X' : 'O';
     const hasAnyMoves = boardState.reduce((hasMoves, boardPosition) => hasMoves || !!boardPosition, false)
+
+    const clearStorage = () => {
+        localStorage.removeItem('boardState')
+        localStorage.removeItem('currentTurn')
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem('boardState')) {
+            setBoardState(JSON.parse(localStorage.getItem('boardState')))
+        }
+        if (localStorage.getItem('currentTurn')) {
+            setCurrentTurn(localStorage.getItem('currentTurn') === 'true')
+        }
+    }, [])
 
     /**
      * The effect checks to see if there has been a winner with checkBoard()
@@ -44,8 +58,18 @@ const BoardContainer = () => {
      * to avoid unnecessary checks before a move has been made by a user
     */
     useEffect(() => {
-        checkBoard();
+        if (hasAnyMoves) {
+            if (isWinningBoard()) {
+                clearStorage();
+            } else {
+                localStorage.setItem('boardState', JSON.stringify(boardState))
+                localStorage.setItem('currentTurn', JSON.stringify(currentTurn))
+            }
+        }
+
     }, [boardState]);
+
+
 
     /**
      * onSquareClicked is a callback function fired when the <Square> component
@@ -69,18 +93,18 @@ const BoardContainer = () => {
      * checks the board to see if a winning letter has been found, 
      * checking all the possible winning combinations
      */
-    const checkBoard = () => {
+    const isWinningBoard = () => {
         //rows
-        checkThreeForWinning(3, 4, 5);
-        checkThreeForWinning(0, 1, 2);
-        checkThreeForWinning(6, 7, 8);
-        //columns
-        checkThreeForWinning(1, 4, 7);
-        checkThreeForWinning(0, 3, 6);
-        checkThreeForWinning(2, 5, 8);
-        //diagonals
-        checkThreeForWinning(0, 4, 8);
-        checkThreeForWinning(2, 4, 6);
+        return checkThreeForWinning(3, 4, 5) ||
+            checkThreeForWinning(0, 1, 2) ||
+            checkThreeForWinning(6, 7, 8) ||
+            //columns
+            checkThreeForWinning(1, 4, 7) ||
+            checkThreeForWinning(0, 3, 6) ||
+            checkThreeForWinning(2, 5, 8) ||
+            //diagonals
+            checkThreeForWinning(0, 4, 8) ||
+            checkThreeForWinning(2, 4, 6);
     }
 
     /**
@@ -92,12 +116,14 @@ const BoardContainer = () => {
      * @param {third} third     integer containing an index on the BoardState array
      */
     const checkThreeForWinning = (first, second, third) => {
-        if (boardState[first] === boardState[second] && boardState[second] === boardState[third] &&
-            boardState[first]) {
+        var isWinning = boardState[first] === boardState[second] && boardState[second] === boardState[third] &&
+            boardState[first];
+
+        if (isWinning) {
             setWinningLetter(boardState[first])
         }
+        return isWinning;
     }
-
     /**
      * onItitialTurnChanged() changes the initial turn of the game, and sets that intial turn to currentTurn
      * it is callback function used by a switch in <BoardControls> component triggered by an Onchange event
@@ -117,6 +143,7 @@ const BoardContainer = () => {
         setCurrentTurn(intialTurn)
         setBoardState(Array(9).fill(null, 0, 9))
         setWinningLetter(null)
+        clearStorage()
     }
 
     return (<>
@@ -135,7 +162,7 @@ const BoardContainer = () => {
         <Board
             boardState={boardState}
             onSquareClicked={onSquareClicked}
-            isGameDone={winningLetter} />
+            isGameDone={!!winningLetter} />
         {winningLetter &&
             <Typography variant="h3" align="center">
                 <strong>{winningLetter}</strong> has won the game!

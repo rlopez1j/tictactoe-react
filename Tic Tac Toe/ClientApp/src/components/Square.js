@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Typography, Paper, ButtonBase } from '@material-ui/core';
 // TODO:
 /*
@@ -16,10 +16,9 @@ const useStyles = makeStyles({
         fontWeight: '900',
         alignSelf: 'center'
     },
-    pointer: {
-        cursor: 'pointer'
+    btn: {
+        height: 100
     }
-
 })
 
 /**
@@ -29,12 +28,18 @@ const useStyles = makeStyles({
  *                             what it does is beyond the scope of this component
  * 
  */
-const Square = ({ children, clickable, onClick }) => {
+const Square = ({ children, disabled, onClick }) => {
     const classes = useStyles()
-    let clickableClass = clickable ? classes.pointer : '';
+
+    const [disabledDelayed, setDisabledDelayed] = useState(disabled);
+
+    useEffect(() => {
+        setTimeout(() => setDisabledDelayed(disabled), 1000);
+    }, [disabled]);
+
     return (
-        <ButtonBase className={classes.square}>
-            <Paper className={`${classes.square} ${clickableClass}`} onClick={onClick} elevation={children ? 20 : 1}>
+        <ButtonBase onClick={onClick} disabled={disabledDelayed}>
+            <Paper className={classes.square} elevation={children ? 20 : 1}>
                 <Typography className={classes.letter}>
                     {children}
                 </Typography>

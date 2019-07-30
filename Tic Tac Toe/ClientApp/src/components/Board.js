@@ -34,7 +34,7 @@ export default function Board({ boardState, onSquareClicked, isGameDone }) {
                 {boardState.map((move, i) => (
                     <div className={classes.child} key={i} >
                         <Square
-                            clickable={!isGameDone && !move}
+                            disabled={isGameDone || !!move}
                             onClick={() => onSquareClicked(i)} >
                             {move}
                         </Square>
