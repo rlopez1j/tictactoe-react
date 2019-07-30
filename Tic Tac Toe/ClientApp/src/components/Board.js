@@ -24,9 +24,9 @@ const useStyles = makeStyles({
 /**
  * Component to display a 3x3 tic tac toe board.
  * @param {boardState} boardState - 1x9 array representing a tic tac toe board with X and O letters
- * @param {onSquareClicked} onSquareClicked - Function that is called when a game square is clicked.
+ * @param {onSquareClicked} onSquareClicked - callback function passed down as a prop to <Square> component
  */
-export default function Board({ boardState, onSquareClicked }) {
+export default function Board({ boardState, onSquareClicked, isGameDone }) {
     const classes = useStyles()
     return (
         <div className={classes.board}>
@@ -34,7 +34,8 @@ export default function Board({ boardState, onSquareClicked }) {
                 {boardState.map((move, i) => (
                     <div className={classes.child} key={i} >
                         <Square
-                            onClick={() => onSquareClicked(i)}>
+                            clickable={!isGameDone && !move}
+                            onClick={() => onSquareClicked(i)} >
                             {move}
                         </Square>
                     </div>
