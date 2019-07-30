@@ -34,7 +34,7 @@ const Square = ({ children, clickable, onClick }) => {
     let clickableClass = clickable ? classes.pointer : '';
     return (
         <ButtonBase className={classes.square}>
-            <Paper className={`${classes.square} ${clickableClass}`} onClick={onClick} elevation={children ? '20' : '1'}>
+            <Paper className={`${classes.square} ${clickableClass}`} onClick={onClick} elevation={children ? 20 : 1}>
                 <Typography className={classes.letter}>
                     {children}
                 </Typography>

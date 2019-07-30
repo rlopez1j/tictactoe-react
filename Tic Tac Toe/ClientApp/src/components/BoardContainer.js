@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Board from './Board';
 import BoardControls from './BoardControls'
-import { fontSize } from '@material-ui/system';
 
 
 const useStyles = makeStyles({
