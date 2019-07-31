@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Board from './Board';
 import BoardControls from './BoardControls'
-import { identifier } from '@babel/types';
-
 
 const useStyles = makeStyles({
     turnDisplay: {
@@ -16,7 +14,7 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         fontWeight: '500',
         fontSize: '45px'
-    }
+    },
 })
 
 // needed to set the initial turn
@@ -152,10 +150,11 @@ const BoardContainer = () => {
             intialTurn={intialTurn}
             onInitialTurnChanged={onInitialTurnChanged}
             onClickReset={onClickReset}
+            winningLetter={winningLetter}
         />
         <Typography className={classes.go}>
-            GO:
-        </Typography>
+            Current Move:
+            </Typography>
         <Typography variant="h1" className={classes.turnDisplay}>
             {currentLetter}
         </Typography>
@@ -163,11 +162,6 @@ const BoardContainer = () => {
             boardState={boardState}
             onSquareClicked={onSquareClicked}
             isGameDone={!!winningLetter} />
-        {winningLetter &&
-            <Typography variant="h3" align="center">
-                <strong>{winningLetter}</strong> has won the game!
-            </Typography>
-        }
     </>)
 }
 

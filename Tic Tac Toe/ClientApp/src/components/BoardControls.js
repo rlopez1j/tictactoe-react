@@ -35,7 +35,7 @@ const useStyles = makeStyles({
  * @param {onClickReset} onClickReset - callback function that resets the entire game
  * 
  */
-export default function BoardControls({ hasAnyMoves, intialTurn, onInitialTurnChanged, onClickReset }) {
+export default function BoardControls({ hasAnyMoves, intialTurn, onInitialTurnChanged, onClickReset, winningLetter }) {
     const classes = useStyles()
 
     return (
@@ -44,7 +44,7 @@ export default function BoardControls({ hasAnyMoves, intialTurn, onInitialTurnCh
                 <div className={classes.buttons}>
                     <div className={classes.switchDiv}>
                         <Typography className={classes.selectLabel}>
-                            Select letter:
+                            Select Move:
                         </Typography>
                         <div className={classes.xoDiv}>
                             <div className={classes.xoFont}>
@@ -60,6 +60,11 @@ export default function BoardControls({ hasAnyMoves, intialTurn, onInitialTurnCh
                             </div>
                         </div>
                     </div>
+                    {winningLetter &&
+                        <Typography variant="h3" align="center">
+                            <strong>{winningLetter}</strong> has won the game!
+                        </Typography>
+                    }
                     <div>
                         <Button color="secondary" variant="contained"
                             onClick={onClickReset}>

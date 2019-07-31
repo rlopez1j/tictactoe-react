@@ -38,7 +38,7 @@ const Square = ({ children, disabled, onClick }) => {
     }, [disabled]);
 
     return (
-        <ButtonBase onClick={onClick} disabled={disabledDelayed}>
+        <ButtonBase className={classes.btn} onClick={onClick} disabled={disabledDelayed}>
             <Paper className={classes.square} elevation={children ? 20 : 1}>
                 <Typography className={classes.letter}>
                     {children}
