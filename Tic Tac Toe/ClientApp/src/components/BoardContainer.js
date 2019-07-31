@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 import Board from './Board';
 import BoardControls from './BoardControls'
+import WinningLine from './WinningLine';
 
 const useStyles = makeStyles({
     turnDisplay: {
@@ -9,16 +10,29 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         fontWeight: 'bold'
     },
-    go: {
+    currentMove: {
         display: 'flex',
         justifyContent: 'center',
         fontWeight: '500',
         fontSize: '45px'
     },
+    board: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    parent: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        height: '387px',
+        width: '16%',
+        alignItems: 'center'
+    },
 })
 
 // needed to set the initial turn
 let intialTurn = false;
+
+let winningIndices = null
 
 /**
  * BoardContainer contains all the logic for components, and is a way
@@ -118,6 +132,7 @@ const BoardContainer = () => {
             boardState[first];
 
         if (isWinning) {
+            winningIndices = `${first}${third}`
             setWinningLetter(boardState[first])
         }
         return isWinning;
@@ -138,6 +153,7 @@ const BoardContainer = () => {
      */
     const onClickReset = () => {
         intialTurn = false
+        winningIndices = null
         setCurrentTurn(intialTurn)
         setBoardState(Array(9).fill(null, 0, 9))
         setWinningLetter(null)
@@ -152,16 +168,21 @@ const BoardContainer = () => {
             onClickReset={onClickReset}
             winningLetter={winningLetter}
         />
-        <Typography className={classes.go}>
+        <Typography className={classes.currentMove}>
             Current Move:
             </Typography>
         <Typography variant="h1" className={classes.turnDisplay}>
             {currentLetter}
         </Typography>
-        <Board
-            boardState={boardState}
-            onSquareClicked={onSquareClicked}
-            isGameDone={!!winningLetter} />
+        <div className={classes.board}>
+            <div className={classes.parent}>
+                <WinningLine winningIndices={winningIndices} />
+                <Board
+                    boardState={boardState}
+                    onSquareClicked={onSquareClicked}
+                    isGameDone={!!winningLetter} />
+            </div>
+        </div>
     </>)
 }
 
