@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { makeStyles, FilledInput } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
     canvas: {
