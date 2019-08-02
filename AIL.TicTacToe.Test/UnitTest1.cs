@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace AIL.TicTacToe.Test
 {
@@ -10,7 +11,7 @@ namespace AIL.TicTacToe.Test
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void FancyGet()
         {
             var options = new DbContextOptionsBuilder<TicTacToeContext>()
                 .UseSqlServer("Server=localhost;Database=TicTacToe;Trusted_Connection=True;ConnectRetryCount=0")
@@ -19,8 +20,22 @@ namespace AIL.TicTacToe.Test
             // Run the test against one instance of the context
             using (var context = new TicTacToeContext(options))
             {
-                var result = context.Games.Select(x => new { x.Date, x.Id, x.Winner }).ToList();
-                System.Console.WriteLine(result);
+                var result = context.Games.Select(x => new { x.Date, x.Winner }).ToList();
+                System.Console.WriteLine($"fancy: {result[0]}");
+            }
+        }
+
+        [TestMethod]
+        public void BasicGet()
+        {
+            var options = new DbContextOptionsBuilder<TicTacToeContext>()
+                .UseSqlServer("Server=localhost;Database=TicTacToe;Trusted_Connection=True;ConnectRetryCount=0")
+                .Options;
+
+            using(var context = new TicTacToeContext(options))
+            {
+                var result = context.Games.ToList();
+                System.Console.WriteLine($"basic: {result[0]}");
             }
         }
 
@@ -32,8 +47,8 @@ namespace AIL.TicTacToe.Test
                     .Options;
 
             // wrk on this
-            var moves = new Moves() { Id = 1, Timestamp = new System.DateTime(2019, 8, 18), Games = games.Id}; // actually create objects for this
-            var game = new Games() { Id = 1, Date = new System.DateTime(2019, 8, 18), Winner = "X", Moves = [moves]}; // actually create objects for this
+            var game = new Games() {Date = new System.DateTime(2019, 8, 19), Winner = "L"}; // actually create objects for this
+            var moves = new Moves() {Timestamp = new System.DateTime(2019, 8, 19), GamesId = game.Id}; // actually create objects for this
 
             using (var context = new TicTacToeContext(options))
             {

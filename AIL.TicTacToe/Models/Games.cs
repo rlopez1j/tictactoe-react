@@ -15,8 +15,5 @@ namespace AIL.TicTacToe.Models // change namespace
 
         [Required]
         public string Winner { get; set; }
-
-        [Required]
-        public ICollection<Moves> Moves{ get; set; }
     }
 }
