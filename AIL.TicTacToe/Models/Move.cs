@@ -7,19 +7,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AIL.TicTacToe.Models
 {
-    public class Moves
+    public class Move
     {
-        [Required]
-        [KeyAttribute]
         public int Id { get; set; }
 
         [Required]
-        public DateTime Timestamp { get; set; } // maybe diff type?
+        public DateTime Timestamp { get; set; } = DateTime.Now;
 
         [Required]
         public string Letter { get; set; }
 
-        public int GamesId { get; set; }
-        public Games Games { get; set; }
+        public int Index { get; set; }
+
+        public int GameId { get; set; }
+        public Game Game { get; set; }
     }
 }

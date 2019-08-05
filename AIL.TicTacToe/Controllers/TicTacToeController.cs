@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using AIL.TicTacToe.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace AIL.TicTacToe.Controllers
 {
@@ -21,35 +23,29 @@ namespace AIL.TicTacToe.Controllers
         }
 
         [HttpGet("history")]
-        public JsonResult HistoryList()
-        {
-            List<Games> game;
-            // get game list from context thingy
-            // only send the relevant parts in json
-            using (_context)
-            {
-                game = _context.Games.ToList();
-            }
+        public List<Game> HistoryList()
+        { 
+           return _context.Games.ToList();
+        }
 
-            return Json(game);
+        [HttpGet("history/{id}")]
+        public Game GetHistoryById(int id)
+        {
+            // do validation
+            return _context.Games.Include(g => g.Moves).Single(m => m.Id == id);
         }
 
         [HttpPost("add-to-history")] // get body
-        public void AddToHistoryList()
+        public IActionResult AddToHistoryList([FromBody] Game model)
         {
-            /* TODO:
-            * create Game instance
-            * add moves instances and add created Game instance as a FK
-            */
+            
+            if (!ModelState.IsValid) return BadRequest("Invalid input");
 
-            Games games;
+            _context.Games.Add(model);
+            _context.SaveChanges();
 
-            using (var reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8, true, 1024, true))
-            {
-                // deserialize json data
-            }
-
-
+            return Ok();
         }
+
     }
 }

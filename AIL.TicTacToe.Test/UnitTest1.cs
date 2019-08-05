@@ -42,7 +42,7 @@ namespace AIL.TicTacToe.Test
         [TestMethod]
         public void MoveListGet()
         {
-            List<Moves> moves;
+            List<Move> moves;
             var options = new DbContextOptionsBuilder<TicTacToeContext>()
                 .UseSqlServer("Server=localhost;Database=TicTacToe;Trusted_Connection=True;ConnectRetryCount=0")
                 .Options;
@@ -50,9 +50,9 @@ namespace AIL.TicTacToe.Test
             using (var context = new TicTacToeContext(options))
             {
                 var game = context.Games.Where(g => g.Id == 4).FirstOrDefault();
-                moves = context.Moves.Where(m => m.GamesId == game.Id).ToList();
+                moves = context.Moves.Where(m => m.GameId == game.Id).ToList();
             }
-            moves.ForEach(delegate (Moves m)
+            moves.ForEach(delegate (Move m)
             {
                 System.Console.WriteLine($"moves: {m.Letter}, {m.Timestamp}, {m.Id}");
             });
@@ -66,7 +66,7 @@ namespace AIL.TicTacToe.Test
                     .Options;
 
             // wrk on this
-            var game = new Games() {Date = System.DateTime.Now, Winner = "L"}; // actually create objects for this
+            var game = new Game() {Date = System.DateTime.Now, Winner = "L"}; // actually create objects for this
             
             using (var context = new TicTacToeContext(options))
             {
@@ -74,8 +74,8 @@ namespace AIL.TicTacToe.Test
                 context.SaveChanges();
             }
 
-            var moves = new Moves() { Timestamp = System.DateTime.Now, Letter = "O", GamesId = game.Id, }; // actually create objects for this
-            var moves1 = new Moves() { Timestamp = System.DateTime.Now, Letter = "X", GamesId = game.Id, }; // actually create objects for this
+            var moves = new Move() { Timestamp = System.DateTime.Now, Letter = "O", GameId = game.Id, }; // actually create objects for this
+            var moves1 = new Move() { Timestamp = System.DateTime.Now, Letter = "X", GameId = game.Id, }; // actually create objects for this
 
             using(var context = new TicTacToeContext(options))
             {

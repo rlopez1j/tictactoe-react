@@ -30,6 +30,10 @@ namespace AIL.TicTacToe
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddMvc().AddJsonOptions(options => { // look into this more
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
