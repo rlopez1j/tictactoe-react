@@ -40,6 +40,25 @@ namespace AIL.TicTacToe.Test
         }
 
         [TestMethod]
+        public void MoveListGet()
+        {
+            List<Moves> moves;
+            var options = new DbContextOptionsBuilder<TicTacToeContext>()
+                .UseSqlServer("Server=localhost;Database=TicTacToe;Trusted_Connection=True;ConnectRetryCount=0")
+                .Options;
+
+            using (var context = new TicTacToeContext(options))
+            {
+                var game = context.Games.Where(g => g.Id == 4).FirstOrDefault();
+                moves = context.Moves.Where(m => m.GamesId == game.Id).ToList();
+            }
+            moves.ForEach(delegate (Moves m)
+            {
+                System.Console.WriteLine($"moves: {m.Letter}, {m.Timestamp}, {m.Id}");
+            });
+        }
+
+        [TestMethod]
         public void POST()
         {
             var options = new DbContextOptionsBuilder<TicTacToeContext>()
@@ -47,13 +66,21 @@ namespace AIL.TicTacToe.Test
                     .Options;
 
             // wrk on this
-            var game = new Games() {Date = new System.DateTime(2019, 8, 19), Winner = "L"}; // actually create objects for this
-            var moves = new Moves() {Timestamp = new System.DateTime(2019, 8, 19), GamesId = game.Id}; // actually create objects for this
-
+            var game = new Games() {Date = System.DateTime.Now, Winner = "L"}; // actually create objects for this
+            
             using (var context = new TicTacToeContext(options))
             {
                 context.Games.Add(game);
+                context.SaveChanges();
+            }
+
+            var moves = new Moves() { Timestamp = System.DateTime.Now, Letter = "O", GamesId = game.Id, }; // actually create objects for this
+            var moves1 = new Moves() { Timestamp = System.DateTime.Now, Letter = "X", GamesId = game.Id, }; // actually create objects for this
+
+            using(var context = new TicTacToeContext(options))
+            {
                 context.Moves.Add(moves);
+                context.Moves.Add(moves1);
                 context.SaveChanges();
             }
         }

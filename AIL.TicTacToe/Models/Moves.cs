@@ -16,7 +16,10 @@ namespace AIL.TicTacToe.Models
         [Required]
         public DateTime Timestamp { get; set; } // maybe diff type?
 
-        [ForeignKey("Games")]
+        [Required]
+        public string Letter { get; set; }
+
         public int GamesId { get; set; }
+        public Games Games { get; set; }
     }
 }

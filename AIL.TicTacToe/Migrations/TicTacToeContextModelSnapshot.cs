@@ -15,7 +15,7 @@ namespace AIL.TicTacToe.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -41,9 +41,10 @@ namespace AIL.TicTacToe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Games");
+                    b.Property<int>("GamesId");
 
-                    b.Property<int?>("GamesId");
+                    b.Property<string>("Letter")
+                        .IsRequired();
 
                     b.Property<DateTime>("Timestamp");
 
@@ -56,9 +57,10 @@ namespace AIL.TicTacToe.Migrations
 
             modelBuilder.Entity("AIL.TicTacToe.Models.Moves", b =>
                 {
-                    b.HasOne("AIL.TicTacToe.Models.Games")
+                    b.HasOne("AIL.TicTacToe.Models.Games", "Games")
                         .WithMany("Moves")
-                        .HasForeignKey("GamesId");
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

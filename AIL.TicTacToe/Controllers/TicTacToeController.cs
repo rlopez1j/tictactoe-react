@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AIL.TicTacToe.Models;
@@ -8,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIL.TicTacToe.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
-    public class TicTacToeController : ControllerBase
+    public class TicTacToeController : Controller
     {
         private readonly TicTacToeContext _context;
 
@@ -19,14 +20,36 @@ namespace AIL.TicTacToe.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public object Get()
+        [HttpGet("history")]
+        public JsonResult HistoryList()
         {
-           // get game list from context thingy
-           // only send the relevant parts in json
-           //var gamesList = _context.Games.
+            List<Games> game;
+            // get game list from context thingy
+            // only send the relevant parts in json
+            using (_context)
+            {
+                game = _context.Games.ToList();
+            }
 
-            return new { };
+            return Json(game);
+        }
+
+        [HttpPost("add-to-history")] // get body
+        public void AddToHistoryList()
+        {
+            /* TODO:
+            * create Game instance
+            * add moves instances and add created Game instance as a FK
+            */
+
+            Games games;
+
+            using (var reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8, true, 1024, true))
+            {
+                // deserialize json data
+            }
+
+
         }
     }
 }

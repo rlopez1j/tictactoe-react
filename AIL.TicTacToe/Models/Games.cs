@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AIL.TicTacToe.Models // change namespace 
+namespace AIL.TicTacToe.Models
 {
     public class Games
     {
@@ -15,5 +15,7 @@ namespace AIL.TicTacToe.Models // change namespace
 
         [Required]
         public string Winner { get; set; }
+
+        public IList<Moves> Moves { get; set; }
     }
 }
